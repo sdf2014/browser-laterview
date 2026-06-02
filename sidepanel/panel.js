@@ -124,7 +124,6 @@ async function deleteItem(id) {
   const filtered = list.filter(item => item.id !== id);
   await setList(filtered);
   renderList(filtered);
-  autoBackup();
 }
 
 async function renderList(list) {
@@ -152,7 +151,6 @@ async function addCurrentTab() {
   list.unshift(item);
   await setList(list);
   renderList(list);
-  autoBackup();
 }
 
 async function clearAll() {
@@ -160,7 +158,6 @@ async function clearAll() {
   if (!confirm('确定清空全部稍后再看列表？')) return;
   await setList([]);
   renderList([]);
-  autoBackup();
 }
 
 async function writeToCustomDir(blob) {
@@ -286,7 +283,6 @@ async function importData(file) {
     const merged = [...newItems, ...current];
     await setList(merged);
     renderList(merged);
-    autoBackup();
     alert(`导入成功！新增 ${newItems.length} 项${newItems.length !== imported.length ? `，跳过 ${imported.length - newItems.length} 项重复` : ''}`);
   } catch {
     alert('导入失败：文件格式不正确');
@@ -316,7 +312,10 @@ async function init() {
   });
 
   chrome.storage.onChanged.addListener((changes) => {
-    if (changes[STORAGE_KEY]) renderList(changes[STORAGE_KEY].newValue || []);
+    if (changes[STORAGE_KEY]) {
+      renderList(changes[STORAGE_KEY].newValue || []);
+      autoBackup();
+    }
   });
 
   window.addEventListener('pagehide', () => {
