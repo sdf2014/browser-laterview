@@ -191,16 +191,17 @@ async function autoBackup() {
   const list = await getList();
   const data = JSON.stringify({ version: 1, exportedAt: Date.now(), list }, null, 2);
   const blob = new Blob([data], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
 
-  // always backup to Downloads
-  try {
-    await chrome.downloads.download({ url, filename: BACKUP_FILENAME, saveAs: false, conflictAction: 'overwrite' });
-  } catch {}
-
-  // also backup to custom directory if set
-  await writeToCustomDir(blob);
-  URL.revokeObjectURL(url);
+  if (backupDirHandle) {
+    await writeToCustomDir(blob);
+  } else {
+    // default: save to Downloads
+    const url = URL.createObjectURL(blob);
+    try {
+      await chrome.downloads.download({ url, filename: BACKUP_FILENAME, saveAs: false, conflictAction: 'overwrite' });
+    } catch {}
+    URL.revokeObjectURL(url);
+  }
 }
 
 async function autoRestore() {
