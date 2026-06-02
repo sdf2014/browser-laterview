@@ -311,6 +311,8 @@ async function init() {
     if (e.target.files[0]) { importData(e.target.files[0]); e.target.value = ''; }
   });
 
+  chrome.runtime.sendMessage({ type: 'panelOpened' });
+
   chrome.runtime.onMessage.addListener((msg) => {
     if (msg.type === 'closePanel') {
       window.close();
@@ -325,6 +327,7 @@ async function init() {
   });
 
   window.addEventListener('pagehide', () => {
+    chrome.runtime.sendMessage({ type: 'panelClosed' });
     document.getElementById('app').classList.add('slide-out');
   });
 }

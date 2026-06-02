@@ -1,3 +1,10 @@
+let panelOpen = false;
+
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === 'panelOpened') panelOpen = true;
+  if (msg.type === 'panelClosed') panelOpen = false;
+});
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "addPageToReadLater",
@@ -11,10 +18,11 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.action.onClicked.addListener(async (tab) => {
-  try {
-    await chrome.runtime.sendMessage({ type: 'closePanel' });
-  } catch {
+chrome.action.onClicked.addListener((tab) => {
+  if (panelOpen) {
+    chrome.runtime.sendMessage({ type: 'closePanel' }).catch(() => {});
+    panelOpen = false;
+  } else {
     chrome.sidePanel.open({ windowId: tab.windowId });
   }
 });
