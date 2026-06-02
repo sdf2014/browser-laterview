@@ -240,6 +240,10 @@ async function init() {
       renderList(changes[STORAGE_KEY].newValue || []);
     }
   });
+
+  window.addEventListener('pagehide', () => {
+    document.getElementById('app').classList.add('fade-out');
+  });
 }
 
 document.addEventListener('DOMContentLoaded', init);

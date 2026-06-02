@@ -148,6 +148,10 @@ body {
   color: var(--text-secondary);
 }
 
+.fade-out {
+  animation: fadeOut 0.25s ease forwards;
+}
+
 .hidden {
   display: none !important;
 }
