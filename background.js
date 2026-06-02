@@ -38,6 +38,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
   chrome.storage.local.get({ readLaterList: [] }, (result) => {
     const list = result.readLaterList;
+    if (list.some(i => i.url === item.url)) return;
     list.unshift(item);
     chrome.storage.local.set({ readLaterList: list });
   });
