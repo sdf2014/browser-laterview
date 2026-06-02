@@ -18,7 +18,7 @@
 1. 打开 Edge 浏览器，地址栏输入 `edge://extensions`
 2. 开启「开发人员模式」
 3. 点击「加载解压缩的扩展」
-4. 选择本项目 `稍后再看-extension/` 文件夹
+4. 选择本项目文件夹
 
 ## 技术栈
 
@@ -26,4 +26,3 @@
 - Side Panel API
 - Context Menus API
 - Storage API
-# 稍后再看验证
