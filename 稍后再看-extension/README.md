@@ -26,3 +26,4 @@
 - Side Panel API
 - Context Menus API
 - Storage API
+# 稍后再看验证
